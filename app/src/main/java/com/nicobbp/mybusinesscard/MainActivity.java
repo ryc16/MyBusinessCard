@@ -31,12 +31,12 @@ import static com.linkedin.platform.utils.Scope.build;
 
 public class MainActivity extends Activity {
 
+    Profile profile = new Profile();
+
     // Build the list of member permissions our LinkedIn session requires
     private static Scope buildScope() {
         return build(Scope.R_BASICPROFILE, Scope.W_SHARE, Scope.R_EMAILADDRESS);
     }
-
-    String profileId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +45,11 @@ public class MainActivity extends Activity {
         // Store a reference to the current activity
         final Activity thisActivity = this;
 
+
         LISessionManager.getInstance(getApplicationContext()).init(thisActivity, buildScope(), new AuthListener() {
             @Override
             public void onAuthSuccess() {
-                // Authentication was successful.  You can now do
-                // other calls with the SDK.
+                // Authentication was successful.  You can now do other calls with the SDK.
                 String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name," +
                         "headline,location,email-address,picture-urls::(original))?format=json";
                 final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
@@ -59,7 +59,8 @@ public class MainActivity extends Activity {
                     public void onApiSuccess(ApiResponse apiResponse) throws JSONException {
                         // Success!
                         JSONObject jsonObject = apiResponse.getResponseDataAsJson();
-                        fillProfileData(jsonObject, thisActivity);
+                        profile.getProfileData(jsonObject);
+                        setProfileData(profile, thisActivity);
                     }
 
                     @Override
@@ -76,33 +77,12 @@ public class MainActivity extends Activity {
         }, true);
     }
 
-    public void fillProfileData(JSONObject jsonObject, Activity activity) throws JSONException {
-
-        profileId = jsonObject.getString("id");
-
-        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        Picasso.with(activity).load(jsonObject.getJSONObject("pictureUrls")
-                .getJSONArray("values").getString(0)).into(profilePicture);
-
-        TextView profileName = (TextView) findViewById(R.id.profile_name);
-        profileName.setText(jsonObject.getString("firstName") + " " + jsonObject.getString("lastName"));
-
-        TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
-        profileHeadline.setText(jsonObject.getString("headline"));
-
-        TextView profileMail = (TextView) findViewById(R.id.profile_mail);
-        profileMail.setText(jsonObject.getString("emailAddress"));
-
-        TextView profileLocation = (TextView) findViewById(R.id.profile_location);
-        profileLocation.setText(jsonObject.getJSONObject("location").getString("name"));
-    }
-
     public void share(View view) {
         BarcodeDetector detector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE).build();
 
         if (detector.isOperational()) {
-            Bitmap myBitmap = generateQR("MyBusinessCard-" + profileId);
+            Bitmap myBitmap = generateQR("MyBusinessCard-" + profile.getId());
 
             Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
             SparseArray<Barcode> barcodeArray = detector.detect(frame);
@@ -111,6 +91,23 @@ public class MainActivity extends Activity {
             TextView txtView = (TextView) findViewById(R.id.profile_id);
             txtView.setText(thisCode.rawValue);
         }
+    }
+
+    public void setProfileData(Profile profile, Activity activity) throws JSONException {
+        TextView profileName = (TextView) findViewById(R.id.profile_name);
+        profileName.setText(profile.getFullName());
+
+        TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
+        profileHeadline.setText(profile.getHeadline());
+
+        TextView profileMail = (TextView) findViewById(R.id.profile_mail);
+        profileMail.setText(profile.getMail());
+
+        TextView profileLocation = (TextView) findViewById(R.id.profile_location);
+        profileLocation.setText(profile.getLocation());
+
+        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
+        Picasso.with(activity).load(profile.getPictureUrl()).into(profilePicture);
     }
 
     public Bitmap generateQR(String content) {
