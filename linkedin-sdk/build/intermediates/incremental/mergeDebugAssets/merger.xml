@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\Nico\Documents\AndroidProjects\MyBusinessCard\linkedin-sdk\src\main\assets"/><source path="D:\Nico\Documents\AndroidProjects\MyBusinessCard\linkedin-sdk\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\Nico\Documents\AndroidProjects\MyBusinessCard\linkedin-sdk\src\debug\assets"/></dataSet></merger>
