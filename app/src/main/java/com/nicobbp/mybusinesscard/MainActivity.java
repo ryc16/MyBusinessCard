@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.zxing.EncodeHintType;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIApiError;
@@ -42,9 +39,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Store a reference to the current activity
         final Activity thisActivity = this;
-
 
         LISessionManager.getInstance(getApplicationContext()).init(thisActivity, buildScope(), new AuthListener() {
             @Override
@@ -60,7 +55,7 @@ public class MainActivity extends Activity {
                         // Success!
                         JSONObject jsonObject = apiResponse.getResponseDataAsJson();
                         profile.getProfileData(jsonObject);
-                        setProfileData(profile, thisActivity);
+                        setUpProfile(profile);
                     }
 
                     @Override
@@ -77,50 +72,49 @@ public class MainActivity extends Activity {
         }, true);
     }
 
-    public void share(View view) {
-        BarcodeDetector detector = new BarcodeDetector.Builder(getApplicationContext())
-                .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE).build();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this, requestCode, resultCode, data);
+    }
 
-        if (detector.isOperational()) {
-            Bitmap myBitmap = generateQR("MyBusinessCard-" + profile.getId());
+    public void setUpProfile(Profile profile) throws JSONException {
+        TextView profileName = (TextView) findViewById(R.id.profile_name);
+        TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
+        TextView profileMail = (TextView) findViewById(R.id.profile_mail);
+        TextView profileLocation = (TextView) findViewById(R.id.profile_location);
 
-            Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
-            SparseArray<Barcode> barcodeArray = detector.detect(frame);
+        profileName.setText(profile.getFullName());
+        profileHeadline.setText(profile.getHeadline());
+        profileMail.setText(profile.getMail());
+        profileLocation.setText(profile.getLocation());
 
-            Barcode thisCode = barcodeArray.valueAt(0);
-            TextView txtView = (TextView) findViewById(R.id.profile_id);
-            txtView.setText(thisCode.rawValue);
+        setProfilePicture();
+    }
+
+    public void flipImage(View view) {
+        ImageView myImage = (ImageView) findViewById(R.id.profile_picture);
+
+        if (Integer.parseInt(myImage.getTag().toString()) == 1) {
+            myImage.setImageBitmap(generateQR());
+            myImage.setTag(2);
+        } else {
+            setProfilePicture();
         }
     }
 
-    public void setProfileData(Profile profile, Activity activity) throws JSONException {
-        TextView profileName = (TextView) findViewById(R.id.profile_name);
-        profileName.setText(profile.getFullName());
+    public Bitmap generateQR() {
+        return QRCode.from(profile.getId()).withSize(512, 512).withHint(EncodeHintType.MARGIN, "1").bitmap();
+    }
 
-        TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
-        profileHeadline.setText(profile.getHeadline());
-
-        TextView profileMail = (TextView) findViewById(R.id.profile_mail);
-        profileMail.setText(profile.getMail());
-
-        TextView profileLocation = (TextView) findViewById(R.id.profile_location);
-        profileLocation.setText(profile.getLocation());
-
+    public void setProfilePicture() {
         ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        Picasso.with(activity).load(profile.getPictureUrl()).into(profilePicture);
+        Picasso.with(this).load(profile.getPictureUrl()).into(profilePicture);
+        profilePicture.setTag(1);
     }
 
-    public Bitmap generateQR(String content) {
-        Bitmap myBitmap = QRCode.from(content).withSize(256, 256).bitmap();
-        ImageView myImage = (ImageView) findViewById(R.id.profile_picture);
-        myImage.setImageBitmap(myBitmap);
-        return myBitmap;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Add this line to your existing onActivityResult() method
-        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this, requestCode, resultCode, data);
+    public void switchToContacts(View view) {
+        Intent someName = new Intent(this, ContactListActivity.class);
+        startActivity(someName);
     }
 }
 
