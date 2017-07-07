@@ -1,11 +1,26 @@
 package com.nicobbp.mybusinesscard;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.google.zxing.EncodeHintType;
+
+import net.glxn.qrgen.android.QRCode;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nicobbp.mybusinesscard.MainActivity.userProfile;
 
 class Profile implements Serializable {
 
@@ -15,13 +30,14 @@ class Profile implements Serializable {
     private String mail;
     private String location;
     private String pictureUrl;
+    private transient Bitmap qrCode;
     private List<Profile> contactList;
 
-    Profile() {
+    public Profile() {
         this.contactList = new ArrayList<>();
     }
 
-    void getProfileData(JSONObject jsonObject) throws JSONException {
+    public void getProfileData(JSONObject jsonObject) throws JSONException {
         setId(jsonObject.getString("id"));
         setFullName(jsonObject.getString("firstName") + " " + jsonObject.getString("lastName"));
         setHeadline(jsonObject.getString("headline"));
@@ -30,59 +46,114 @@ class Profile implements Serializable {
         setPictureUrl(jsonObject.getJSONObject("pictureUrls").getJSONArray("values").getString(0));
     }
 
-    String getId() {
+    public String generateProfileString() {
+        return "ValidLinkedInProfile__" +
+                userProfile.getId() + "__" +
+                userProfile.getFullName() + "__" +
+                userProfile.getHeadline() + "__" +
+                userProfile.getMail() + "__" +
+                userProfile.getLocation() + "__" +
+                userProfile.getPictureUrl();
+    }
+
+    public void generateQR() {
+        setQrCode(QRCode.from(generateProfileString()).withSize(512, 512)
+                .withHint(EncodeHintType.MARGIN, "1").bitmap());
+    }
+
+    public Profile createContactFromQRCode(String code) {
+        String DELIMITER = "__";
+        String[] strTemp = code.split(DELIMITER);
+
+        Profile newContact = new Profile();
+        newContact.setId(strTemp[1]);
+        newContact.setFullName(strTemp[2]);
+        newContact.setHeadline(strTemp[3]);
+        newContact.setMail(strTemp[4]);
+        newContact.setLocation(strTemp[5]);
+        newContact.setPictureUrl(strTemp[6]);
+        return newContact;
+    }
+
+    public Profile readSavedProfile(Activity activity) throws IOException, ClassNotFoundException {
+        FileInputStream fis = activity.openFileInput("profileSave.txt");
+        ObjectInputStream is = new ObjectInputStream(fis);
+        Profile myProfile = (Profile) is.readObject();
+        is.close();
+        fis.close();
+        return myProfile;
+    }
+
+    public void writeSavedProfile(Profile myProfile, Activity activity) throws IOException {
+        FileOutputStream fos = activity.openFileOutput("profileSave.txt", Context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(myProfile);
+        os.close();
+        fos.close();
+    }
+
+    public String getId() {
         return id;
     }
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 
-    void setFullName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    String getHeadline() {
+    public String getHeadline() {
         return headline;
     }
 
-    void setHeadline(String headline) {
+    public void setHeadline(String headline) {
         this.headline = headline;
     }
 
-    String getMail() {
+    public String getMail() {
         return mail;
     }
 
-    void setMail(String mail) {
+    public void setMail(String mail) {
         this.mail = mail;
     }
 
-    String getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    void setLocation(String location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
-    String getPictureUrl() {
+    public String getPictureUrl() {
         return pictureUrl;
     }
 
-    void setPictureUrl(String pictureUrl) {
+    public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
     }
 
-    List<Profile> getContactList() {
+    public Bitmap getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(Bitmap qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public List<Profile> getContactList() {
         return contactList;
     }
 
-    void setContactList(List<Profile> contactList) {
+    public void setContactList(List<Profile> contactList) {
         this.contactList = contactList;
     }
+
 }

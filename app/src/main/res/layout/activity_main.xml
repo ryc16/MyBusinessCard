@@ -9,94 +9,59 @@
 
     <ImageView
         android:id="@+id/profile_picture"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="70dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/image_border"
-        android:maxHeight="175dp"
-        android:maxWidth="175dp"
-        android:onClick="flipImage"
-        android:padding="5dp" />
+        style="@style/ProfilePicture"
+        android:onClick="flipImage" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+    <LinearLayout style="@style/ProfileContainer">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/ProfileTextAndIcon">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                style="@style/ProfileIcon"
                 android:src="@drawable/icon_person" />
 
             <TextView
                 android:id="@+id/profile_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                style="@style/ProfileText" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/ProfileTextAndIcon">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                style="@style/ProfileIcon"
                 android:src="@drawable/icon_briefcase" />
 
             <TextView
                 android:id="@+id/profile_headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                style="@style/ProfileText" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/ProfileTextAndIcon">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                style="@style/ProfileIcon"
                 android:src="@drawable/icon_location" />
 
             <TextView
                 android:id="@+id/profile_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                style="@style/ProfileText" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/ProfileTextAndIcon">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                style="@style/ProfileIcon"
                 android:src="@drawable/icon_mail" />
 
             <TextView
                 android:id="@+id/profile_mail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                style="@style/ProfileText" />
+
         </LinearLayout>
+
     </LinearLayout>
 
     <Button

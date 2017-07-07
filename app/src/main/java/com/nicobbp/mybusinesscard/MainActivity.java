@@ -2,13 +2,11 @@ package com.nicobbp.mybusinesscard;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.zxing.EncodeHintType;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIApiError;
@@ -19,8 +17,6 @@ import com.linkedin.platform.listeners.AuthListener;
 import com.linkedin.platform.utils.Scope;
 import com.squareup.picasso.Picasso;
 
-import net.glxn.qrgen.android.QRCode;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +25,6 @@ import static com.linkedin.platform.utils.Scope.build;
 public class MainActivity extends Activity {
 
     static Profile userProfile = new Profile();
-    static Bitmap userQRCode;
 
     // Build the list of member permissions our LinkedIn session requires
     private static Scope buildScope() {
@@ -56,7 +51,7 @@ public class MainActivity extends Activity {
                         // Success!
                         JSONObject jsonObject = apiResponse.getResponseDataAsJson();
                         userProfile.getProfileData(jsonObject);
-                        setUpProfile(userProfile);
+                        setUpProfileView(userProfile);
                     }
 
                     @Override
@@ -79,7 +74,7 @@ public class MainActivity extends Activity {
                 .onActivityResult(this, requestCode, resultCode, data);
     }
 
-    public void setUpProfile(Profile profile) throws JSONException {
+    public void setUpProfileView(Profile profile) throws JSONException {
         TextView profileName = (TextView) findViewById(R.id.profile_name);
         TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
         TextView profileMail = (TextView) findViewById(R.id.profile_mail);
@@ -91,21 +86,7 @@ public class MainActivity extends Activity {
         profileLocation.setText(profile.getLocation());
 
         setProfilePicture();
-        generateQR();
-    }
-
-    public String generateProfileString() {
-        return userProfile.getId() + "__" +
-                userProfile.getFullName() + "__" +
-                userProfile.getHeadline() + "__" +
-                userProfile.getMail() + "__" +
-                userProfile.getLocation() + "__" +
-                userProfile.getPictureUrl();
-    }
-
-    public void generateQR() {
-        userQRCode = QRCode.from(generateProfileString()).withSize(512, 512)
-                .withHint(EncodeHintType.MARGIN, "1").bitmap();
+        profile.generateQR();
     }
 
     public void setProfilePicture() {
@@ -118,7 +99,7 @@ public class MainActivity extends Activity {
         ImageView myImage = (ImageView) findViewById(R.id.profile_picture);
 
         if (Integer.parseInt(myImage.getTag().toString()) == 1) {
-            myImage.setImageBitmap(userQRCode);
+            myImage.setImageBitmap(userProfile.getQrCode());
             myImage.setTag(2);
         } else {
             setProfilePicture();
@@ -130,5 +111,3 @@ public class MainActivity extends Activity {
         startActivity(someName);
     }
 }
-
-
