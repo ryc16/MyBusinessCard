@@ -28,11 +28,12 @@ import static com.linkedin.platform.utils.Scope.build;
 
 public class MainActivity extends Activity {
 
-    Profile profile = new Profile();
+    static Profile userProfile = new Profile();
+    static Bitmap userQRCode;
 
     // Build the list of member permissions our LinkedIn session requires
     private static Scope buildScope() {
-        return build(Scope.R_BASICPROFILE, Scope.W_SHARE, Scope.R_EMAILADDRESS);
+        return build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
     }
 
     @Override
@@ -54,8 +55,8 @@ public class MainActivity extends Activity {
                     public void onApiSuccess(ApiResponse apiResponse) throws JSONException {
                         // Success!
                         JSONObject jsonObject = apiResponse.getResponseDataAsJson();
-                        profile.getProfileData(jsonObject);
-                        setUpProfile(profile);
+                        userProfile.getProfileData(jsonObject);
+                        setUpProfile(userProfile);
                     }
 
                     @Override
@@ -74,7 +75,8 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LISessionManager.getInstance(getApplicationContext()).onActivityResult(this, requestCode, resultCode, data);
+        LISessionManager.getInstance(getApplicationContext())
+                .onActivityResult(this, requestCode, resultCode, data);
     }
 
     public void setUpProfile(Profile profile) throws JSONException {
@@ -89,27 +91,38 @@ public class MainActivity extends Activity {
         profileLocation.setText(profile.getLocation());
 
         setProfilePicture();
+        generateQR();
+    }
+
+    public String generateProfileString() {
+        return userProfile.getId() + "__" +
+                userProfile.getFullName() + "__" +
+                userProfile.getHeadline() + "__" +
+                userProfile.getMail() + "__" +
+                userProfile.getLocation() + "__" +
+                userProfile.getPictureUrl();
+    }
+
+    public void generateQR() {
+        userQRCode = QRCode.from(generateProfileString()).withSize(512, 512)
+                .withHint(EncodeHintType.MARGIN, "1").bitmap();
+    }
+
+    public void setProfilePicture() {
+        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
+        Picasso.with(this).load(userProfile.getPictureUrl()).into(profilePicture);
+        profilePicture.setTag(1);
     }
 
     public void flipImage(View view) {
         ImageView myImage = (ImageView) findViewById(R.id.profile_picture);
 
         if (Integer.parseInt(myImage.getTag().toString()) == 1) {
-            myImage.setImageBitmap(generateQR());
+            myImage.setImageBitmap(userQRCode);
             myImage.setTag(2);
         } else {
             setProfilePicture();
         }
-    }
-
-    public Bitmap generateQR() {
-        return QRCode.from(profile.getId()).withSize(512, 512).withHint(EncodeHintType.MARGIN, "1").bitmap();
-    }
-
-    public void setProfilePicture() {
-        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        Picasso.with(this).load(profile.getPictureUrl()).into(profilePicture);
-        profilePicture.setTag(1);
     }
 
     public void switchToContacts(View view) {

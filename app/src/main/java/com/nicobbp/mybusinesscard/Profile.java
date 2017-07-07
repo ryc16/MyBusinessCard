@@ -3,7 +3,11 @@ package com.nicobbp.mybusinesscard;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class Profile {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+class Profile implements Serializable {
 
     private String id;
     private String fullName;
@@ -11,6 +15,11 @@ class Profile {
     private String mail;
     private String location;
     private String pictureUrl;
+    private List<Profile> contactList;
+
+    Profile() {
+        this.contactList = new ArrayList<>();
+    }
 
     void getProfileData(JSONObject jsonObject) throws JSONException {
         setId(jsonObject.getString("id"));
@@ -25,7 +34,7 @@ class Profile {
         return id;
     }
 
-    private void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
@@ -33,7 +42,7 @@ class Profile {
         return fullName;
     }
 
-    private void setFullName(String fullName) {
+    void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
@@ -41,7 +50,7 @@ class Profile {
         return headline;
     }
 
-    private void setHeadline(String headline) {
+    void setHeadline(String headline) {
         this.headline = headline;
     }
 
@@ -49,7 +58,7 @@ class Profile {
         return mail;
     }
 
-    private void setMail(String mail) {
+    void setMail(String mail) {
         this.mail = mail;
     }
 
@@ -57,7 +66,7 @@ class Profile {
         return location;
     }
 
-    private void setLocation(String location) {
+    void setLocation(String location) {
         this.location = location;
     }
 
@@ -65,7 +74,15 @@ class Profile {
         return pictureUrl;
     }
 
-    private void setPictureUrl(String pictureUrl) {
+    void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    List<Profile> getContactList() {
+        return contactList;
+    }
+
+    void setContactList(List<Profile> contactList) {
+        this.contactList = contactList;
     }
 }

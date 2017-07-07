@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">My Business Card</string>
     <string name="contacts">Contacts</string>
-    <string name="scan">Scan</string>
+    <string name="add">Add</string>
 </resources>

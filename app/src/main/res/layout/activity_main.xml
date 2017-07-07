@@ -15,9 +15,11 @@
         android:layout_marginBottom="30dp"
         android:layout_marginTop="70dp"
         android:adjustViewBounds="true"
+        android:background="@drawable/image_border"
         android:maxHeight="175dp"
         android:maxWidth="175dp"
-        android:onClick="flipImage" />
+        android:onClick="flipImage"
+        android:padding="5dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
