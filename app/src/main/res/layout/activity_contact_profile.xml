@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
+    android:id="@+id/contact_layout"
     style="@style/VerticalLayout"
-    tools:context="com.nicobbp.mybusinesscard.MainActivity">
+    tools:context="com.nicobbp.mybusinesscard.ContactProfileActivity">
 
     <include layout="@layout/profile_layout" />
 
     <Button
         style="@style/Button"
-        android:onClick="switchToContacts"
-        android:text="@string/contacts" />
+        android:onClick="goToProfile"
+        android:text="@string/GoToProfile" />
 
 </LinearLayout>

@@ -2,4 +2,6 @@
     <string name="app_name">My Business Card</string>
     <string name="contacts">Contacts</string>
     <string name="add">Add</string>
+    <string name="GoToProfile">Go To Profile</string>
+    <string name="Login">Login</string>
 </resources>

@@ -20,8 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nicobbp.mybusinesscard.MainActivity.userProfile;
-
 class Profile implements Serializable {
 
     private String id;
@@ -37,7 +35,7 @@ class Profile implements Serializable {
         this.contactList = new ArrayList<>();
     }
 
-    public void getProfileData(JSONObject jsonObject) throws JSONException {
+    public void getProfileDataFromJSON(JSONObject jsonObject) throws JSONException {
         setId(jsonObject.getString("id"));
         setFullName(jsonObject.getString("firstName") + " " + jsonObject.getString("lastName"));
         setHeadline(jsonObject.getString("headline"));
@@ -48,12 +46,12 @@ class Profile implements Serializable {
 
     public String generateProfileString() {
         return "ValidLinkedInProfile__" +
-                userProfile.getId() + "__" +
-                userProfile.getFullName() + "__" +
-                userProfile.getHeadline() + "__" +
-                userProfile.getMail() + "__" +
-                userProfile.getLocation() + "__" +
-                userProfile.getPictureUrl();
+                getId() + "__" +
+                getFullName() + "__" +
+                getHeadline() + "__" +
+                getMail() + "__" +
+                getLocation() + "__" +
+                getPictureUrl();
     }
 
     public void generateQR() {

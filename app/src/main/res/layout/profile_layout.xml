@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/VerticalLayout">
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        style="@style/ProfilePicture" />
+
+    <LinearLayout style="@style/ProfileContainer">
+
+        <LinearLayout style="@style/ProfileTextAndIcon">
+
+            <ImageView
+                style="@style/ProfileIcon"
+                android:src="@drawable/icon_person" />
+
+            <TextView
+                android:id="@+id/profile_name"
+                style="@style/ProfileText" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProfileTextAndIcon">
+
+            <ImageView
+                style="@style/ProfileIcon"
+                android:src="@drawable/icon_briefcase" />
+
+            <TextView
+                android:id="@+id/profile_headline"
+                style="@style/ProfileText" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProfileTextAndIcon">
+
+            <ImageView
+                style="@style/ProfileIcon"
+                android:src="@drawable/icon_location" />
+
+            <TextView
+                android:id="@+id/profile_location"
+                style="@style/ProfileText" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/ProfileTextAndIcon">
+
+            <ImageView
+                style="@style/ProfileIcon"
+                android:src="@drawable/icon_mail" />
+
+            <TextView
+                android:id="@+id/profile_mail"
+                style="@style/ProfileText" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
