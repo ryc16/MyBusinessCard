@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@drawable/logo_bc"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo_bc"
@@ -16,8 +17,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ContactListActivity" />
-        <activity android:name=".ContactProfileActivity" />
+        <activity
+            android:name=".ContactListActivity"
+            android:label="@string/contact_list_activity" />
+        <activity
+            android:name=".ContactProfileActivity"
+            android:label="@string/contact_profile_activity" />
     </application>
 
 </manifest>

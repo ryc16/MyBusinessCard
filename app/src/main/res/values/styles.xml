@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
@@ -13,7 +12,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -28,11 +27,11 @@
         <item name="android:layout_height">175dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginBottom">20dp</item>
-        <item name="android:layout_marginTop">70dp</item>
+        <item name="android:layout_marginTop">50dp</item>
         <item name="android:background">@drawable/image_border</item>
         <item name="android:maxHeight">175dp</item>
         <item name="android:maxWidth">175dp</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">7dp</item>
     </style>
 
     <style name="ProfileContainer">
@@ -46,13 +45,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingEnd">30dp</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
-    <style name="ProfileText">
+    <style name="ProfileText" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="ProfileIcon">
@@ -64,35 +65,45 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingEnd">5dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">1dp</item>
     </style>
 
-    <style name="ContactText">
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">80dp</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
+    <style name="ContactText" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:paddingStart">5dp</item>
         <item name="android:layout_weight">1</item>
     </style>
 
     <style name="ContactImage">
         <item name="android:layout_width">75dp</item>
         <item name="android:layout_height">75dp</item>
+        <item name="android:padding">2dp</item>
     </style>
 
-    <style name="Button">
+    <style name="Button" parent="Theme.AppCompat.Light">
+        <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginTop">15dp</item>
     </style>
 
-    <style name="ButtonRemove">
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+    <style name="ButtonRemove" parent="Theme.AppCompat.Light">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_gravity">end|center_vertical</item>
-        <item name="android:background">@drawable/button_bg_round</item>
-        <item name="android:text">@string/Delete</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/icon_trashcan</item>
     </style>
+
 </resources>

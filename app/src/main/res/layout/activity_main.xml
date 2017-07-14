@@ -10,6 +10,7 @@
     <Button
         style="@style/Button"
         android:onClick="switchToContacts"
-        android:text="@string/contacts" />
+        android:text="@string/contacts"
+        android:theme="@style/Button" />
 
 </LinearLayout>

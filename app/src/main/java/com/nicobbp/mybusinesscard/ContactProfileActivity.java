@@ -1,8 +1,8 @@
 package com.nicobbp.mybusinesscard;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +15,7 @@ import com.nicobbp.mybusinesscard.Classes.Profile;
 import com.squareup.picasso.Picasso;
 
 
-public class ContactProfileActivity extends Activity {
+public class ContactProfileActivity extends AppCompatActivity {
     Profile contactProfile = new Profile();
 
     @Override

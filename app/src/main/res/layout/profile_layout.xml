@@ -55,5 +55,6 @@
                 style="@style/ProfileText" />
 
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

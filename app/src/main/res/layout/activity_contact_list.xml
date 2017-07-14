@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context="com.nicobbp.mybusinesscard.ContactListActivity">
 
     <LinearLayout style="@style/VerticalLayout">
@@ -11,10 +12,13 @@
             android:id="@+id/contact_list_layout"
             style="@style/VerticalLayout" />
 
-        <Button
-            style="@style/Button"
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
             android:onClick="scanCode"
-            android:text="@string/add" />
+            android:src="@drawable/icon_add" />
 
     </LinearLayout>
 </ScrollView>

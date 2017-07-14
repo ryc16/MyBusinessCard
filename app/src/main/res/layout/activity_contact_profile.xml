@@ -10,6 +10,7 @@
     <Button
         style="@style/Button"
         android:onClick="goToProfile"
-        android:text="@string/GoToProfile" />
+        android:text="@string/go_to_profile"
+        android:theme="@style/Button" />
 
 </LinearLayout>

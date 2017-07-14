@@ -3,6 +3,7 @@ package com.nicobbp.mybusinesscard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import org.json.JSONObject;
 
 import static com.linkedin.platform.utils.Scope.build;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     static Profile userProfile = new Profile();
 
@@ -63,14 +64,14 @@ public class LoginActivity extends Activity {
 
                     @Override
                     public void onApiError(LIApiError liApiError) {
-                        Toast.makeText(thisActivity, "Error connecting with LinkedIn, please try again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(thisActivity, R.string.connection_error, Toast.LENGTH_LONG).show();
                     }
                 });
             }
 
             @Override
             public void onAuthError(LIAuthError error) {
-                Toast.makeText(thisActivity, "Error connecting with LinkedIn, please try again", Toast.LENGTH_LONG).show();
+                Toast.makeText(thisActivity, R.string.authentication_error, Toast.LENGTH_LONG).show();
             }
         }, true);
     }

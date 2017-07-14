@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Business Card</string>
+    <string name="connection_error">Conexión con LinkedIn fallida, por favor reintentar</string>
+    <string name="authentication_error">Error de autenticación, por favor reintentar</string>
+    <string name="contact_list_activity">Mis contactos</string>
+    <string name="contact_profile_activity">Perfil del Contacto</string>
+    <string name="contacts">CONTACTOS</string>
+    <string name="go_to_profile">IR AL PERFIL</string>
+    <string name="invalid_qr_error">Código QR inválido</string>
+    <string name="add_self_error">¡No puedes agregarte a ti mismo como contacto!</string>
+</resources>

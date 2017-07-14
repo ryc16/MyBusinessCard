@@ -3,6 +3,7 @@ package com.nicobbp.mybusinesscard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,7 +21,7 @@ import java.util.Iterator;
 
 import static com.nicobbp.mybusinesscard.LoginActivity.userProfile;
 
-public class ContactListActivity extends Activity {
+public class ContactListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +46,19 @@ public class ContactListActivity extends Activity {
 
         if (scanResult.getContents() != null) {
             if (scanResult.getContents().contains("ValidLinkedInProfile")) {
-                try {
-                    userProfile.getContactList().add(userProfile.createContactFromQRCode(scanResult.getContents()));
-                    userProfile.writeSavedProfile(userProfile, this);
-                    generateContactList(userProfile.getContactList().iterator());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (scanResult.getContents().contains(userProfile.getId())) {
+                    Toast.makeText(this, R.string.add_self_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        userProfile.getContactList().add(userProfile.createContactFromQRCode(scanResult.getContents()));
+                        userProfile.writeSavedProfile(userProfile, this);
+                        generateContactList(userProfile.getContactList().iterator());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
-                Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.invalid_qr_error, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -66,6 +71,7 @@ public class ContactListActivity extends Activity {
         while (contacts.hasNext()) {
             final Profile newContact = (Profile) contacts.next();
             LinearLayout textAndIcon = createNewContactLayout(newContact.getId(), newContact.getFullName(), newContact.getPictureUrl());
+            View divider = getLayoutInflater().inflate(R.layout.contact_divider, linearLayout, false);
             textAndIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -83,6 +89,7 @@ public class ContactListActivity extends Activity {
             });
 
             linearLayout.addView(textAndIcon);
+            linearLayout.addView(divider);
         }
     }
 
@@ -90,7 +97,7 @@ public class ContactListActivity extends Activity {
         LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.contact_layout, null);
         ImageView contactPicture = (ImageView) getLayoutInflater().inflate(R.layout.contact_image, linearLayout, false);
         TextView contactFullName = (TextView) getLayoutInflater().inflate(R.layout.contact_text, linearLayout, false);
-        Button buttonDelete = (Button) getLayoutInflater().inflate(R.layout.contact_button, linearLayout, false);
+        Button buttonDelete = (Button) getLayoutInflater().inflate(R.layout.contact_delete_button, linearLayout, false);
 
         Picasso.with(this).load(pictureUrl).into(contactPicture);
         contactFullName.setText(fullName);

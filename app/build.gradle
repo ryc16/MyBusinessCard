@@ -26,9 +26,11 @@ dependencies {
     })
     compile project(':linkedin-sdk')
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.zxing:core:3.3.0'
     compile 'com.google.zxing:android-integration:3.3.0'
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
 }
