@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nicobbp.mybusinesscard.Classes.Profile;
 import com.squareup.picasso.Picasso;
 
 import static com.nicobbp.mybusinesscard.LoginActivity.userProfile;

@@ -11,6 +11,7 @@ import com.linkedin.platform.DeepLinkHelper;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIDeepLinkError;
 import com.linkedin.platform.listeners.DeepLinkListener;
+import com.nicobbp.mybusinesscard.Classes.Profile;
 import com.squareup.picasso.Picasso;
 
 

@@ -61,20 +61,23 @@
     </style>
 
     <style name="ContactTextAndImage">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:paddingEnd">5dp</item>
     </style>
 
     <style name="ContactText">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="ContactImage">
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">75dp</item>
+        <item name="android:layout_height">75dp</item>
     </style>
 
     <style name="Button">
@@ -82,5 +85,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginTop">15dp</item>
+    </style>
+
+    <style name="ButtonRemove">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:background">@drawable/button_bg_round</item>
+        <item name="android:text">@string/Delete</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

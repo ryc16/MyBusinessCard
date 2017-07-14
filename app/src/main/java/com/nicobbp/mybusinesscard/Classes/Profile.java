@@ -1,4 +1,4 @@
-package com.nicobbp.mybusinesscard;
+package com.nicobbp.mybusinesscard.Classes;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,10 +17,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
-class Profile implements Serializable {
+public class Profile implements Serializable {
 
     private String id;
     private String fullName;
@@ -29,10 +28,14 @@ class Profile implements Serializable {
     private String location;
     private String pictureUrl;
     private transient Bitmap qrCode;
-    private List<Profile> contactList;
+    private HashSet<Profile> contactList;
 
     public Profile() {
-        this.contactList = new ArrayList<>();
+        this.contactList = new HashSet<>();
+    }
+
+    public Profile(String contactId) {
+        setId(contactId);
     }
 
     public void getProfileDataFromJSON(JSONObject jsonObject) throws JSONException {
@@ -44,7 +47,7 @@ class Profile implements Serializable {
         setPictureUrl(jsonObject.getJSONObject("pictureUrls").getJSONArray("values").getString(0));
     }
 
-    public String generateProfileString() {
+    private String generateProfileString() {
         return "ValidLinkedInProfile__" +
                 getId() + "__" +
                 getFullName() + "__" +
@@ -88,6 +91,16 @@ class Profile implements Serializable {
         os.writeObject(myProfile);
         os.close();
         fos.close();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return ((Profile) object).getId().equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 
     public String getId() {
@@ -146,12 +159,8 @@ class Profile implements Serializable {
         this.qrCode = qrCode;
     }
 
-    public List<Profile> getContactList() {
+    public HashSet<Profile> getContactList() {
         return contactList;
-    }
-
-    public void setContactList(List<Profile> contactList) {
-        this.contactList = contactList;
     }
 
 }

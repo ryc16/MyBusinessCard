@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:onClick="login"
+        android:padding="30dp"
         android:src="@drawable/sign_in" />
 
 </LinearLayout>

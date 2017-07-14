@@ -14,6 +14,7 @@ import com.linkedin.platform.listeners.ApiListener;
 import com.linkedin.platform.listeners.ApiResponse;
 import com.linkedin.platform.listeners.AuthListener;
 import com.linkedin.platform.utils.Scope;
+import com.nicobbp.mybusinesscard.Classes.Profile;
 
 import org.json.JSONException;
 import org.json.JSONObject;

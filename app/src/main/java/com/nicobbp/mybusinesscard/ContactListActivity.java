@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,7 +12,11 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.nicobbp.mybusinesscard.Classes.Profile;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.Iterator;
 
 import static com.nicobbp.mybusinesscard.LoginActivity.userProfile;
 
@@ -27,7 +32,7 @@ public class ContactListActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        generateContactList();
+        generateContactList(userProfile.getContactList().iterator());
     }
 
     public void scanCode(View view) {
@@ -40,13 +45,10 @@ public class ContactListActivity extends Activity {
 
         if (scanResult.getContents() != null) {
             if (scanResult.getContents().contains("ValidLinkedInProfile")) {
-                userProfile.getContactList().add(userProfile.createContactFromQRCode(scanResult.getContents()));
                 try {
+                    userProfile.getContactList().add(userProfile.createContactFromQRCode(scanResult.getContents()));
                     userProfile.writeSavedProfile(userProfile, this);
-
-                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contact_list_layout);
-                    addNewContact(linearLayout, userProfile.getContactList().size() - 1);
-
+                    generateContactList(userProfile.getContactList().iterator());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -56,48 +58,63 @@ public class ContactListActivity extends Activity {
         }
     }
 
-    public void generateContactList() {
-        View linearLayout = findViewById(R.id.contact_list_layout);
-        for (int i = 0; i < userProfile.getContactList().size(); i++) {
-            addNewContact((LinearLayout) linearLayout, i);
+    public void generateContactList(Iterator contacts) {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contact_list_layout);
+        linearLayout.removeAllViews();
+        final Activity thisActivity = this;
+
+        while (contacts.hasNext()) {
+            final Profile newContact = (Profile) contacts.next();
+            LinearLayout textAndIcon = createNewContactLayout(newContact.getId(), newContact.getFullName(), newContact.getPictureUrl());
+            textAndIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent contactProfile = new Intent(thisActivity, ContactProfileActivity.class);
+
+                    contactProfile.putExtra("ID", newContact.getId());
+                    contactProfile.putExtra("FULL_NAME", newContact.getFullName());
+                    contactProfile.putExtra("HEADLINE", newContact.getHeadline());
+                    contactProfile.putExtra("MAIL", newContact.getMail());
+                    contactProfile.putExtra("LOCATION", newContact.getLocation());
+                    contactProfile.putExtra("PICTURE_URL", newContact.getPictureUrl());
+
+                    startActivity(contactProfile);
+                }
+            });
+
+            linearLayout.addView(textAndIcon);
         }
     }
 
-    public void addNewContact(LinearLayout linearLayout, final int i) {
-        final Activity thisActivity = this;
-        final Profile newContact = userProfile.getContactList().get(i);
+    public LinearLayout createNewContactLayout(final String contactId, String fullName, String pictureUrl) {
+        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.contact_layout, null);
+        ImageView contactPicture = (ImageView) getLayoutInflater().inflate(R.layout.contact_image, linearLayout, false);
+        TextView contactFullName = (TextView) getLayoutInflater().inflate(R.layout.contact_text, linearLayout, false);
+        Button buttonDelete = (Button) getLayoutInflater().inflate(R.layout.contact_button, linearLayout, false);
 
-        LinearLayout textAndIcon = createNewContactLayout(newContact.getFullName(), newContact.getPictureUrl());
-        textAndIcon.setOnClickListener(new View.OnClickListener() {
+        Picasso.with(this).load(pictureUrl).into(contactPicture);
+        contactFullName.setText(fullName);
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent contactProfile = new Intent(thisActivity, ContactProfileActivity.class);
-
-                contactProfile.putExtra("ID", newContact.getId());
-                contactProfile.putExtra("FULL_NAME", newContact.getFullName());
-                contactProfile.putExtra("HEADLINE", newContact.getHeadline());
-                contactProfile.putExtra("MAIL", newContact.getMail());
-                contactProfile.putExtra("LOCATION", newContact.getLocation());
-                contactProfile.putExtra("PICTURE_URL", newContact.getPictureUrl());
-
-                startActivity(contactProfile);
+                try {
+                    deleteContact(contactId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        linearLayout.addView(textAndIcon);
-    }
-
-    public LinearLayout createNewContactLayout(String fullName, String pictureUrl) {
-        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.contact_layout, null);
-        ImageView imageView = (ImageView) getLayoutInflater().inflate(R.layout.contact_image, null);
-        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.contact_text, null);
-
-        Picasso.with(this).load(pictureUrl).resize(150, 150).into(imageView);
-        textView.setText(fullName);
-
-        linearLayout.addView(imageView);
-        linearLayout.addView(textView);
+        linearLayout.addView(contactPicture);
+        linearLayout.addView(contactFullName);
+        linearLayout.addView(buttonDelete);
         return linearLayout;
     }
 
+    public void deleteContact(String contactId) throws IOException {
+        Profile contact = new Profile(contactId);
+        userProfile.getContactList().remove(contact);
+        userProfile.writeSavedProfile(userProfile, this);
+        generateContactList(userProfile.getContactList().iterator());
+    }
 }

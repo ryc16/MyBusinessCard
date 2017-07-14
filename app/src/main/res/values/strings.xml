@@ -4,4 +4,5 @@
     <string name="add">Add</string>
     <string name="GoToProfile">Go To Profile</string>
     <string name="Login">Login</string>
+    <string name="Delete">x</string>
 </resources>
