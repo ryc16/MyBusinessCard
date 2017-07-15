@@ -1,11 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Business Card</string>
-    <string name="contact_list_activity">My Contacts</string>
-    <string name="contact_profile_activity">Contact Profile</string>
-
+    <string name="app_name">My business card</string>
+    <string name="contact_list_activity">My contacts</string>
+    <string name="contact_profile_activity">Contact profile</string>
     <string name="contacts">CONTACTS</string>
     <string name="go_to_profile">GO TO PROFILE</string>
-
     <string name="connection_error">Connection with LinkedIn failed, please try again</string>
     <string name="authentication_error">Authentication error, please try again</string>
     <string name="add_self_error">You can\'t add yourself as a contact!</string>

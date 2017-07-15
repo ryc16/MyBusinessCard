@@ -71,7 +71,11 @@ public class ContactListActivity extends AppCompatActivity {
         while (contacts.hasNext()) {
             final Profile newContact = (Profile) contacts.next();
             LinearLayout textAndIcon = createNewContactLayout(newContact.getId(), newContact.getFullName(), newContact.getPictureUrl());
-            View divider = getLayoutInflater().inflate(R.layout.contact_divider, linearLayout, false);
+
+            View divider = null;
+            if (contacts.hasNext())
+                divider = getLayoutInflater().inflate(R.layout.contact_divider, linearLayout, false);
+
             textAndIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +93,8 @@ public class ContactListActivity extends AppCompatActivity {
             });
 
             linearLayout.addView(textAndIcon);
-            linearLayout.addView(divider);
+            if (divider != null)
+                linearLayout.addView(divider);
         }
     }
 

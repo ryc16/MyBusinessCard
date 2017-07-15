@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nicobbp.mybusinesscard.Classes.Profile;
 import com.squareup.picasso.Picasso;
+
+import eu.davidea.flipview.FlipView;
 
 import static com.nicobbp.mybusinesscard.LoginActivity.userProfile;
 
@@ -21,45 +22,30 @@ public class MainActivity extends AppCompatActivity {
         setUpProfileView(userProfile);
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     public void setUpProfileView(Profile profile) {
         TextView profileName = (TextView) findViewById(R.id.profile_name);
         TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
         TextView profileMail = (TextView) findViewById(R.id.profile_mail);
         TextView profileLocation = (TextView) findViewById(R.id.profile_location);
-        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
 
         profileName.setText(profile.getFullName());
         profileHeadline.setText(profile.getHeadline());
         profileMail.setText(profile.getMail());
         profileLocation.setText(profile.getLocation());
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flipImage(v);
-            }
-        });
-
         setProfilePicture();
-        profile.generateQR();
     }
 
     public void setProfilePicture() {
-        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        Picasso.with(this).load(userProfile.getPictureUrl()).into(profilePicture);
-        profilePicture.setTag(1);
-    }
+        FlipView profilePicture = (FlipView) findViewById(R.id.profile_picture);
+        Picasso.with(this).load(userProfile.getPictureUrl()).into(profilePicture.getFrontImageView());
 
-    public void flipImage(View view) {
-        ImageView myImage = (ImageView) findViewById(R.id.profile_picture);
-
-        if (Integer.parseInt(myImage.getTag().toString()) == 1) {
-            if (userProfile.getQrCode() == null)
-                userProfile.generateQR();
-            myImage.setImageBitmap(userProfile.getQrCode());
-            myImage.setTag(2);
-        } else {
-            setProfilePicture();
-        }
+        userProfile.generateQR();
+        profilePicture.setRearImageBitmap(userProfile.getQrCode());
     }
 
     public void switchToContacts(View view) {

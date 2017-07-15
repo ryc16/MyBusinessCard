@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     style="@style/VerticalLayout"
     tools:context="com.nicobbp.mybusinesscard.MainActivity">
+
+    <eu.davidea.flipview.FlipView
+        android:id="@+id/profile_picture"
+        style="@style/ProfilePicture"
+        android:clickable="true"
+        app:animateRearImage="false" />
 
     <include layout="@layout/profile_layout" />
 

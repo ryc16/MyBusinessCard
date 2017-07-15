@@ -49,7 +49,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         TextView profileHeadline = (TextView) findViewById(R.id.profile_headline);
         TextView profileMail = (TextView) findViewById(R.id.profile_mail);
         TextView profileLocation = (TextView) findViewById(R.id.profile_location);
-        ImageView profilePicture = (ImageView) findViewById(R.id.profile_picture);
+        ImageView profilePicture = (ImageView) findViewById(R.id.contact_picture);
 
         profileName.setText(profile.getFullName());
         profileHeadline.setText(profile.getHeadline());

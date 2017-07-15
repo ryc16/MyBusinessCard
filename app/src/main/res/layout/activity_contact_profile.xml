@@ -5,6 +5,10 @@
     style="@style/VerticalLayout"
     tools:context="com.nicobbp.mybusinesscard.ContactProfileActivity">
 
+    <ImageView
+        android:id="@+id/contact_picture"
+        style="@style/ProfilePicture" />
+
     <include layout="@layout/profile_layout" />
 
     <Button
