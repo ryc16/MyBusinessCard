@@ -10,7 +10,8 @@
         android:id="@+id/profile_picture"
         style="@style/ProfilePicture"
         android:clickable="true"
-        app:animateRearImage="false" />
+        app:animateRearImage="false"
+        app:frontBackground="@color/colorIcons" />
 
     <include layout="@layout/profile_layout" />
 
