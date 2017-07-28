@@ -82,7 +82,10 @@ public class Profile implements Serializable {
         Profile myProfile = (Profile) is.readObject();
         is.close();
         fis.close();
-        return myProfile;
+        if (myProfile.equals(this))
+            return myProfile;
+        else
+            return this;
     }
 
     public void writeSavedProfile(Profile myProfile, Activity activity) throws IOException {
